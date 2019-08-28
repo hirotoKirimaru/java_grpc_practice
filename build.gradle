@@ -15,13 +15,20 @@ repositories {
     jcenter()
 }
 
-def grpcVersion = '1.21.0'
+ext{
+    grpcVersion = '1.21.0'
+    grpcStarterVersion = '3.4.1'
+
+}
 
 dependencies {
-//    compile "io.grpc:grpc-netty:${grpcVersion}"
-//    compile "io.grpc:grpc-protobuf:${grpcVersion}"
-//    compile "io.grpc:grpc-stub:${grpcVersion}"
-    compile('org.lognet:grpc-spring-boot-starter:${grpcStarterVersion}')
+    // 生成に必要？
+    compile "io.grpc:grpc-netty:${grpcVersion}"
+    compile "io.grpc:grpc-protobuf:${grpcVersion}"
+    compile "io.grpc:grpc-stub:${grpcVersion}"
+
+    //　SpringBoot?
+    implementation "io.github.lognet:grpc-spring-boot-starter:${grpcStarterVersion}"
 }
 
 protobuf {
