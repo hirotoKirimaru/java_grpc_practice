@@ -1,16 +1,51 @@
-plugins {
-    id 'java'
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'com.google.protobuf:protobuf-gradle-plugin:0.8.8'
+    }
 }
 
-group 'java-grpc'
-version '1.0-SNAPSHOT'
-
-sourceCompatibility = 1.8
+apply plugin: 'java'
+apply plugin: 'idea'
+apply plugin: 'com.google.protobuf'
 
 repositories {
-    mavenCentral()
+    jcenter()
 }
 
+def grpcVersion = '1.21.0'
+
 dependencies {
-    testCompile group: 'junit', name: 'junit', version: '4.12'
+//    compile "io.grpc:grpc-netty:${grpcVersion}"
+//    compile "io.grpc:grpc-protobuf:${grpcVersion}"
+//    compile "io.grpc:grpc-stub:${grpcVersion}"
+    compile('org.lognet:grpc-spring-boot-starter:${grpcStarterVersion}')
+}
+
+protobuf {
+    protoc {
+        artifact = "com.google.protobuf:protoc:3.8.0"
+    }
+    plugins {
+        grpc {
+            artifact = 'io.grpc:protoc-gen-grpc-java:1.21.0'
+        }
+    }
+    generateProtoTasks {
+        all()*.plugins {
+            grpc {}
+        }
+    }
+}
+
+// for IDEA
+sourceSets {
+    main {
+        java {
+            srcDirs 'build/generated/source/proto/main/grpc'
+            srcDirs 'build/generated/source/proto/main/java'
+        }
+    }
 }
